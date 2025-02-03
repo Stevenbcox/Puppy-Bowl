@@ -7,7 +7,7 @@ import NavBar from "./components/NavBar";
 
 function App() {
   return (
-    <div className="App background">
+    <div className="App">
       <NavBar />
       <h1>Stevens Puppy Bowl!</h1>
       <Routes>

@@ -90,6 +90,12 @@ nav a:hover {
   cursor: pointer;
 }
 
+#new-player select {
+    margin: 10px;
+    padding: 5px;
+    width: 300px;
+}
+
 .player-details {
   background: white;
   border: 1px solid #ccc;
