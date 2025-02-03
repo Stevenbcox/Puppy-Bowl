@@ -1,24 +1,31 @@
 import { useEffect, useState } from "react";
-import { fetchSinglePlayer } from '../services/api';
+import { useParams } from "react-router-dom";
+import { fetchSinglePlayer } from "../services/api";
 
 export default function SinglePlayer() {
-  const [player, setPlayer] = useState([]);
+  const { id } = useParams();
+  const [player, setPlayer] = useState(null);
 
   useEffect(() => {
-    async function fetchPlayers() {
+    async function fetchPlayer() {
       try {
-        const data = await fetchSinglePlayer();
-        setPlayer(data.player);
+        const data = await fetchSinglePlayer(id);
+        console.log("Fetched player data:", data); // Debugging line
+        setPlayer(data.player); // Adjust this line based on the actual data structure
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching player:", error);
       }
     }
-    fetchPlayers();
-  }, []);
+    fetchPlayer();
+  }, [id]);
+
+  if (!player) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h4>{player.name}</h4>
+    <div className="player-details">
+      <h2>{player.name}</h2>
+      <p>Breed: {player.breed}</p>
+      <p>Status: {player.status}</p>
     </div>
   );
 }

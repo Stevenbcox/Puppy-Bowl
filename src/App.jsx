@@ -1,22 +1,21 @@
-// import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import AllPlayers from "./components/AllPlayers";
-import SinglePlayer from "./components/SinglePlayer";
+import Details from "./components/Details";
 import NewPlayerForm from "./components/NewPlayerForm";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
-    <>
-    <div className="App">
-      <h1> Stevens Puppy Bowl! </h1>
+    <div className="App background">
+      <NavBar />
+      <h1>Stevens Puppy Bowl!</h1>
       <Routes>
         <Route path="/" element={<AllPlayers />} />
-        <Route path="/player/:id" element={<SinglePlayer />} />
-        {/* <Route path="/player/add-player" element={<NewPlayerForm />} /> */}
+        <Route path="/player/:id" element={<Details />} />
+        <Route path="/player/add-player" element={<NewPlayerForm />} />
       </Routes>
-      </div>
-    </>
+    </div>
   );
 }
 

@@ -1,25 +1,28 @@
-// Use the API_URL variable for fetch requests
 const API_URL = `https://fsa-puppy-bowl.herokuapp.com/api/2410-ftb-et-pt`;
 
-export async function fetchPlayers() {
+export const fetchAllPlayers = async () => {
   try {
     const response = await fetch(`${API_URL}/players`);
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error("Error fetching players:", error);
+    const players = await response.json();
+    return players.data.players; // Adjusted to match the structure of the API response
+  } catch (err) {
+    console.error("Uh oh, trouble fetching players!", err);
   }
-}
+};
 
-export async function getPlayerDetails(id) {
+export const fetchSinglePlayer = async (playerId) => {
   try {
-    const response = await fetch(`${API_URL}/players/%{id}`);
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(`Error fetching player details: ${id}`, error);
+    const response = await fetch(`${API_URL}/players/${playerId}`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const playerData = await response.json();
+    return playerData.data.player; // Adjusted to match the structure of the API response
+  } catch (err) {
+    console.error("Error fetching single player:", err);
+    return null;
   }
-}
+};
 
 export const addNewPlayer = async (name, breed, url, team) => {
   try {
@@ -28,34 +31,21 @@ export const addNewPlayer = async (name, breed, url, team) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, breed, url, team }),
+      body: JSON.stringify({ name, breed, imageUrl: url, team }),
     });
     const json = await response.json();
     return json;
-  } catch (error) {
-    console.error("Error adding new player:", error);
+  } catch (err) {
+    console.error("Oops, something went wrong with adding that player!", err);
   }
 };
 
-export const deletePlayer = async (playerId) => {
+export const removePlayer = async (playerId) => {
   try {
-    const response = await fetch(`${API_URL}/players/${playerId}`, {
+    await fetch(`${API_URL}/players/${playerId}`, {
       method: "DELETE",
-      "content-type": "application/json",
     });
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error(`Error deleting player: ${playerId}`, error);
-  }
-};
-
-export const getTeams = async () => {
-  try {
-    const response = await fetch(`${API_URL}/teams`);
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error("Error fetching teams:", error);
+  } catch (err) {
+    console.error(`Whoops, trouble removing player #${playerId} from the roster!`, err);
   }
 };
